@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SEO Team Request Form | NCL</title>
+<title>SEO Team Request Form</title>
 <style>
   :root {
     --navy: #003366;
-    --gold: #c8a04b;
     --bg: #f5f7fa;
     --border: #d7dce3;
     --text: #1b2430;
@@ -27,41 +26,18 @@
     color: #fff;
     padding: 28px 24px;
   }
-  header h1 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-  }
-  header p {
-    margin: 6px 0 0;
-    color: #cdd8e6;
-    font-size: 14px;
-  }
-  main {
-    max-width: 640px;
-    margin: 32px auto 64px;
-    padding: 0 20px;
-  }
+  header h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  header p { margin: 6px 0 0; color: #cdd8e6; font-size: 14px; }
+  main { max-width: 640px; margin: 32px auto 64px; padding: 0 20px; }
   form {
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 32px;
   }
-  .field {
-    margin-bottom: 22px;
-  }
-  label {
-    display: block;
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-  .hint {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 4px;
-  }
+  .field { margin-bottom: 22px; }
+  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
   input, select, textarea {
     width: 100%;
     padding: 10px 12px;
@@ -77,15 +53,8 @@
     border-color: var(--navy);
     box-shadow: 0 0 0 3px rgba(0,51,102,0.12);
   }
-  textarea {
-    min-height: 110px;
-    resize: vertical;
-  }
-  .row-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-  }
+  textarea { min-height: 110px; resize: vertical; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   button {
     width: 100%;
     background: var(--navy);
@@ -109,9 +78,7 @@
   #status.success { display: block; background: #e7f4ea; color: var(--success); border: 1px solid #b9dcc2; }
   #status.error { display: block; background: #fbe9e7; color: var(--error); border: 1px solid #f0c4bf; }
   .required { color: var(--error); }
-  @media (max-width: 480px) {
-    .row-2 { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -167,7 +134,7 @@
 
     <div class="field">
       <label for="url">Related URL / page (if applicable)</label>
-      <input type="text" id="url" name="url" placeholder="https://www.ncl.com/...">
+      <input type="text" id="url" name="url" placeholder="https://example.com/...">
     </div>
 
     <div class="field">
