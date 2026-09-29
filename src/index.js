@@ -100,9 +100,12 @@ async function handleSubmit(request, env) {
     }
   }
 
-  if (!env.RESEND_API_KEY || !env.NOTIFY_EMAIL) {
+  const missingEnvVars = [];
+  if (!env.RESEND_API_KEY) missingEnvVars.push("RESEND_API_KEY");
+  if (!env.NOTIFY_EMAIL) missingEnvVars.push("NOTIFY_EMAIL");
+  if (missingEnvVars.length > 0) {
     return jsonResponse(
-      { ok: false, error: "Server is not configured to send email. Contact the site admin." },
+      { ok: false, error: `Server is not configured to send email. Missing: ${missingEnvVars.join(", ")}.` },
       500
     );
   }
