@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEO Ticket Dashboard</title>
+<style>
+  :root {
+    --sand: #ebe7df;
+    --aqua: #a7cac6;
+    --aqua-dark: #7fa39e;
+    --aqua-darker: #5f7f7a;
+    --yellow: #e6cd88;
+    --border: #d9d2c4;
+    --text: #1b2430;
+    --muted: #5b6572;
+    --error: #b3261e;
+    --success: #1e7a34;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--sand);
+    color: var(--text);
+  }
+  header {
+    background: linear-gradient(135deg, var(--aqua) 0%, var(--aqua-dark) 100%);
+    padding: 24px;
+    border-bottom: 4px solid var(--yellow);
+  }
+  header h1 {
+    margin: 0;
+    font-size: 20px;
+  }
+  main {
+    max-width: 1100px;
+    margin: 24px auto 64px;
+    padding: 0 20px;
+  }
+  #loginBox {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    max-width: 360px;
+    margin: 60px auto;
+  }
+  #loginBox label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  #loginBox input {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  #loginBox button, .toolbar button {
+    background: var(--aqua-darker);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  #loginBox button:hover, .toolbar button:hover { background: var(--aqua-dark); }
+  #loginError { color: var(--error); font-size: 13px; margin-top: 8px; display: none; }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .toolbar .count { color: var(--muted); font-size: 13px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: #f3f0e8;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--muted);
+  }
+  td.desc { max-width: 260px; }
+  select, input.hours {
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 13px;
+    width: 100%;
+  }
+  input.hours { width: 70px; }
+  .row-save {
+    background: var(--aqua-darker);
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .row-save:hover { background: var(--aqua-dark); }
+  .saved-tag { color: var(--success); font-size: 11px; margin-left: 6px; display: none; }
+  #dashboard { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SEO Ticket Dashboard</h1>
+</header>
+
+<main>
+  <div id="loginBox">
+    <label for="pwInput">Admin password</label>
+    <input type="password" id="pwInput" autocomplete="current-password">
+    <button id="loginBtn">View tickets</button>
+    <div id="loginError">Incorrect password. Try again.</div>
+  </div>
+
+  <div id="dashboard">
+    <div class="toolbar">
+      <span class="count" id="countLabel"></span>
+      <button id="exportBtn">Download CSV</button>
+    </div>
+    <table id="ticketsTable">
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Submitted</th>
+          <th>Requester</th>
+          <th>Team</th>
+          <th>Request Type</th>
+          <th>Priority</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Hours Spent</th>
+        </tr>
+      </thead>
+      <tbody id="ticketsBody"></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+  let adminPassword = "";
+  const loginBox = document.getElementById('loginBox');
+  const dashboard = document.getElementById('dashboard');
+  const loginBtn = document.getElementById('loginBtn');
+  const pwInput = document.getElementById('pwInput');
+  const loginError = document.getElementById('loginError');
+  const ticketsBody = document.getElementById('ticketsBody');
+  const countLabel = document.getElementById('countLabel');
+  const exportBtn = document.getElementById('exportBtn');
+
+  const STATUS_OPTIONS = ["New", "In Progress", "Complete"];
+
+  function escapeText(v) {
+    const d = document.createElement('div');
+    d.textContent = v ?? "";
+    return d.innerHTML;
+  }
+
+  async function loadTickets() {
+    const res = await fetch('/api/tickets', {
+      headers: { 'X-Admin-Password': adminPassword }
+    });
+    if (res.status === 401) {
+      throw new Error('unauthorized');
+    }
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Failed to load tickets.');
+    renderTickets(data.tickets);
+  }
+
+  function renderTickets(tickets) {
+    countLabel.textContent = tickets.length + (tickets.length === 1 ? ' ticket' : ' tickets');
+    ticketsBody.innerHTML = '';
+
+    tickets.forEach((t) => {
+      const tr = document.createElement('tr');
+
+      const statusOptionsHtml = STATUS_OPTIONS.map((s) =>
+        `<option value="${s}" ${t.status === s ? 'selected' : ''}>${s}</option>`
+      ).join('');
+
+      tr.innerHTML = `
+        <td>${escapeText(t.id)}</td>
+        <td>${escapeText(new Date(t.createdAt).toLocaleString())}</td>
+        <td>${escapeText(t.name)}<br><span style="color:#5b6572;">${escapeText(t.email)}</span></td>
+        <td>${escapeText(t.team)}</td>
+        <td>${escapeText(t.requestType)}</td>
+        <td>${escapeText(t.priority)}</td>
+        <td class="desc">${escapeText(t.description)}</td>
+        <td><select class="status-select">${statusOptionsHtml}</select></td>
+        <td>
+          <input type="number" step="0.25" min="0" class="hours" value="${t.hoursSpent ?? ''}">
+          <button class="row-save">Save</button>
+          <span class="saved-tag">Saved</span>
+        </td>
+      `;
+
+      const saveBtn = tr.querySelector('.row-save');
+      const savedTag = tr.querySelector('.saved-tag');
+      saveBtn.addEventListener('click', async () => {
+        const status = tr.querySelector('.status-select').value;
+        const hoursSpent = tr.querySelector('.hours').value;
+        saveBtn.textContent = 'Saving...';
+        try {
+          const res = await fetch('/api/tickets/update', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Admin-Password': adminPassword
+            },
+            body: JSON.stringify({ id: t.id, status, hoursSpent })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'Failed to save.');
+          savedTag.style.display = 'inline';
+          setTimeout(() => { savedTag.style.display = 'none'; }, 1500);
+        } catch (err) {
+          alert(err.message || 'Failed to save changes.');
+        } finally {
+          saveBtn.textContent = 'Save';
+        }
+      });
+
+      ticketsBody.appendChild(tr);
+    });
+  }
+
+  loginBtn.addEventListener('click', async () => {
+    adminPassword = pwInput.value;
+    loginError.style.display = 'none';
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Checking...';
+    try {
+      await loadTickets();
+      loginBox.style.display = 'none';
+      dashboard.style.display = 'block';
+    } catch (err) {
+      loginError.style.display = 'block';
+    } finally {
+      loginBtn.disabled = false;
+      loginBtn.textContent = 'View tickets';
+    }
+  });
+
+  pwInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loginBtn.click();
+  });
+
+  exportBtn.addEventListener('click', async () => {
+    exportBtn.disabled = true;
+    exportBtn.textContent = 'Preparing...';
+    try {
+      const res = await fetch('/api/export', {
+        headers: { 'X-Admin-Password': adminPassword }
+      });
+      if (!res.ok) throw new Error('Export failed.');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'seo-tickets.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert(err.message || 'Failed to export.');
+    } finally {
+      exportBtn.disabled = false;
+      exportBtn.textContent = 'Download CSV';
+    }
+  });
+</script>
+
+</body>
+</html>
