@@ -6,9 +6,15 @@
 <title>SEO Team Request Form</title>
 <style>
   :root {
-    --navy: #003366;
-    --bg: #f5f7fa;
-    --border: #d7dce3;
+    /* NCL brand palette */
+    --sand: #ebe7df;
+    --teal: #00484f;
+    --teal-dark: #002e33;
+    --ocean-blue: #006099;
+    --ncl-blue: #0a84bd;
+    --yellow: #e6cd88;
+    --salmon: #ff938a;
+    --border: #d9d2c4;
     --text: #1b2430;
     --muted: #5b6572;
     --error: #b3261e;
@@ -17,27 +23,80 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
+    font-family: "Segoe UI", -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--sand);
     color: var(--text);
   }
   header {
-    background: var(--navy);
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
     color: #fff;
-    padding: 28px 24px;
+    padding: 32px 24px;
+    border-bottom: 4px solid var(--yellow);
   }
-  header h1 { margin: 0; font-size: 22px; font-weight: 600; }
-  header p { margin: 6px 0 0; color: #cdd8e6; font-size: 14px; }
-  main { max-width: 640px; margin: 32px auto 64px; padding: 0 20px; }
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+  }
+  header p {
+    margin: 8px 0 0;
+    color: #cfe6e8;
+    font-size: 14px;
+  }
+  main {
+    max-width: 680px;
+    margin: 32px auto 64px;
+    padding: 0 20px;
+  }
+  .notice {
+    background: #f8f1dd;
+    border: 1px solid #d9c48f;
+    border-left: 4px solid var(--yellow);
+    border-radius: 8px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #4a3f1f;
+  }
+  .notice strong {
+    display: block;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #8a6d1f;
+    margin-bottom: 6px;
+  }
   form {
     background: #fff;
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 32px;
   }
-  .field { margin-bottom: 22px; }
-  label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .field {
+    margin-bottom: 22px;
+  }
+  label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--teal);
+  }
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .hint.warning {
+    color: #c1443b;
+    font-weight: 600;
+    display: none;
+  }
+  .hint.warning.visible {
+    display: block;
+  }
   input, select, textarea {
     width: 100%;
     padding: 10px 12px;
@@ -50,24 +109,36 @@
   }
   input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: var(--navy);
-    box-shadow: 0 0 0 3px rgba(0,51,102,0.12);
+    border-color: var(--ocean-blue);
+    box-shadow: 0 0 0 3px rgba(0,96,153,0.14);
   }
-  textarea { min-height: 110px; resize: vertical; }
-  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+  .row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  input[type="file"] {
+    padding: 8px;
+    background: #fafbfc;
+  }
   button {
     width: 100%;
-    background: var(--navy);
+    background: var(--ocean-blue);
     color: #fff;
     border: none;
     padding: 13px 16px;
     border-radius: 6px;
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
+    letter-spacing: 0.2px;
   }
-  button:hover { background: #024b8a; }
-  button:disabled { background: #8fa3b8; cursor: not-allowed; }
+  button:hover { background: var(--teal); }
+  button:disabled { background: #7fa8c2; cursor: not-allowed; }
   #status {
     margin-top: 16px;
     font-size: 14px;
@@ -78,7 +149,9 @@
   #status.success { display: block; background: #e7f4ea; color: var(--success); border: 1px solid #b9dcc2; }
   #status.error { display: block; background: #fbe9e7; color: var(--error); border: 1px solid #f0c4bf; }
   .required { color: var(--error); }
-  @media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .row-2 { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -89,6 +162,11 @@
 </header>
 
 <main>
+  <div class="notice">
+    <strong>Current priority notice</strong>
+    The SEO team is currently prioritizing technical work related to SuperNova. All ad hoc requests are secondary and will be scheduled based on priority and submission date, as capacity allows. For this reason, there is no due date field; if you have a specific deadline, please include it in the description, and I will do my best to accommodate it. Thank you for your patience.
+  </div>
+
   <form id="ticketForm">
     <div class="field">
       <label for="name">Your name <span class="required">*</span></label>
@@ -111,41 +189,45 @@
         <label for="requestType">Request type <span class="required">*</span></label>
         <select id="requestType" name="requestType" required>
           <option value="" disabled selected>Select one</option>
-          <option>Metadata / title tag update</option>
-          <option>New page or content SEO review</option>
-          <option>Redirect request</option>
-          <option>Keyword / competitive research</option>
-          <option>Technical SEO issue</option>
-          <option>Site audit or performance check</option>
-          <option>Other</option>
+          <option>Core Site Page Brief Request — Tier 1</option>
+          <option>Core Site Content Review — Tier 1</option>
+          <option>Metadata — Tier 2</option>
+          <option>Blog Page Brief Request — Tier 2</option>
+          <option>YouTube Titles/Descriptions — Tier 3</option>
+          <option>Blog Photo Updates — Tier 3</option>
+          <option>Other — Priority assigned after SEO review</option>
         </select>
       </div>
       <div class="field">
         <label for="priority">Priority <span class="required">*</span></label>
         <select id="priority" name="priority" required>
           <option value="" disabled selected>Select one</option>
-          <option>Low</option>
-          <option>Medium</option>
-          <option>High</option>
+          <option>Tier 1</option>
+          <option>Tier 2</option>
+          <option>Tier 3</option>
           <option>Urgent</option>
         </select>
+        <div class="hint warning" id="urgentHint">
+          Urgent requests: Message Rachel Doheny on Teams for approval before selecting "Urgent." Include the reason for urgency and required deadline.
+        </div>
       </div>
     </div>
 
     <div class="field">
       <label for="url">Related URL / page (if applicable)</label>
-      <input type="text" id="url" name="url" placeholder="https://example.com/...">
-    </div>
-
-    <div class="field">
-      <label for="dueDate">Needed by</label>
-      <input type="date" id="dueDate" name="dueDate">
+      <input type="text" id="url" name="url" placeholder="https://www.ncl.com/...">
     </div>
 
     <div class="field">
       <label for="description">Description <span class="required">*</span></label>
       <textarea id="description" name="description" required placeholder="What do you need from the SEO team? Include any relevant context, links, or deadlines."></textarea>
-      <div class="hint">Be as specific as possible — this goes straight to the SEO team's inbox.</div>
+      <div class="hint">Be as specific as possible — this goes straight to the SEO team's inbox. If you have a hard deadline, include it here.</div>
+    </div>
+
+    <div class="field">
+      <label for="attachment">Attachment (optional)</label>
+      <input type="file" id="attachment" name="attachment">
+      <div class="hint">Max 8 MB. Screenshots, briefs, spreadsheets, etc.</div>
     </div>
 
     <button type="submit" id="submitBtn">Submit request</button>
@@ -157,26 +239,63 @@
   const form = document.getElementById('ticketForm');
   const statusEl = document.getElementById('status');
   const submitBtn = document.getElementById('submitBtn');
+  const prioritySelect = document.getElementById('priority');
+  const urgentHint = document.getElementById('urgentHint');
+  const fileInput = document.getElementById('attachment');
+
+  const MAX_FILE_BYTES = 8 * 1024 * 1024;
+
+  prioritySelect.addEventListener('change', () => {
+    urgentHint.classList.toggle('visible', prioritySelect.value === 'Urgent');
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result;
+        const base64 = result.substring(result.indexOf(',') + 1);
+        resolve(base64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     statusEl.style.display = 'none';
     statusEl.className = '';
+
+    const file = fileInput.files[0];
+    if (file && file.size > MAX_FILE_BYTES) {
+      statusEl.textContent = 'Attachment is too large. Please keep it under 8 MB.';
+      statusEl.className = 'error';
+      statusEl.style.display = 'block';
+      return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 
-    const payload = {
-      name: form.name.value.trim(),
-      email: form.email.value.trim(),
-      team: form.team.value.trim(),
-      requestType: form.requestType.value,
-      priority: form.priority.value,
-      url: form.url.value.trim(),
-      dueDate: form.dueDate.value,
-      description: form.description.value.trim()
-    };
-
     try {
+      const payload = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        team: form.team.value.trim(),
+        requestType: form.requestType.value,
+        priority: form.priority.value,
+        url: form.url.value.trim(),
+        description: form.description.value.trim()
+      };
+
+      if (file) {
+        payload.attachment = {
+          filename: file.name,
+          content: await fileToBase64(file)
+        };
+      }
+
       const res = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -193,6 +312,7 @@
       statusEl.className = 'success';
       statusEl.style.display = 'block';
       form.reset();
+      urgentHint.classList.remove('visible');
     } catch (err) {
       statusEl.textContent = err.message || 'Something went wrong. Please try again or email the SEO team directly.';
       statusEl.className = 'error';
