@@ -8,14 +8,14 @@
   :root {
     /* NCL brand palette */
     --sand: #ebe7df;
-    --teal: #00484f;
-    --teal-dark: #002e33;
-    --ocean-blue: #006099;
-    --ncl-blue: #0a84bd;
+    --aqua: #a7cac6;
+    --aqua-dark: #7fa39e;
+    --aqua-darker: #5f7f7a;
     --yellow: #e6cd88;
     --salmon: #ff938a;
     --border: #d9d2c4;
     --text: #1b2430;
+    --text-on-aqua: #16302c;
     --muted: #5b6572;
     --error: #b3261e;
     --success: #1e7a34;
@@ -28,8 +28,8 @@
     color: var(--text);
   }
   header {
-    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
-    color: #fff;
+    background: linear-gradient(135deg, var(--aqua) 0%, var(--aqua-dark) 100%);
+    color: var(--text-on-aqua);
     padding: 32px 24px;
     border-bottom: 4px solid var(--yellow);
   }
@@ -41,7 +41,7 @@
   }
   header p {
     margin: 8px 0 0;
-    color: #cfe6e8;
+    color: #2c4844;
     font-size: 14px;
   }
   main {
@@ -68,6 +68,21 @@
     color: #8a6d1f;
     margin-bottom: 6px;
   }
+  .notice h4 {
+    margin: 16px 0 6px;
+    font-size: 13px;
+    color: #4a3f1f;
+  }
+  .notice ol {
+    margin: 0 0 12px;
+    padding-left: 20px;
+  }
+  .notice ol li {
+    margin-bottom: 3px;
+  }
+  .notice p {
+    margin: 0 0 6px;
+  }
   form {
     background: #fff;
     border: 1px solid var(--border);
@@ -82,7 +97,7 @@
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 6px;
-    color: var(--teal);
+    color: var(--aqua-darker);
   }
   .hint {
     font-size: 12px;
@@ -109,8 +124,8 @@
   }
   input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: var(--ocean-blue);
-    box-shadow: 0 0 0 3px rgba(0,96,153,0.14);
+    border-color: var(--aqua-dark);
+    box-shadow: 0 0 0 3px rgba(127,163,158,0.25);
   }
   textarea {
     min-height: 110px;
@@ -127,7 +142,7 @@
   }
   button {
     width: 100%;
-    background: var(--ocean-blue);
+    background: var(--aqua-darker);
     color: #fff;
     border: none;
     padding: 13px 16px;
@@ -137,8 +152,8 @@
     cursor: pointer;
     letter-spacing: 0.2px;
   }
-  button:hover { background: var(--teal); }
-  button:disabled { background: #7fa8c2; cursor: not-allowed; }
+  button:hover { background: var(--aqua-dark); }
+  button:disabled { background: #a9b8b5; cursor: not-allowed; }
   #status {
     margin-top: 16px;
     font-size: 14px;
@@ -164,7 +179,21 @@
 <main>
   <div class="notice">
     <strong>Current priority notice</strong>
-    The SEO team is currently prioritizing technical work related to SuperNova. All ad hoc requests are secondary and will be scheduled based on priority and submission date, as capacity allows. For this reason, there is no due date field; if you have a specific deadline, please include it in the description, and I will do my best to accommodate it. Thank you for your patience.
+    <p>The SEO team is currently prioritizing technical work related to SuperNova. All ad hoc requests are secondary and will be scheduled based on priority and submission date, as capacity allows. For this reason, there is no due date field; if you have a specific deadline, please include it in the description, and I will do my best to accommodate it. Thank you for your patience.</p>
+
+    <h4>Request priorities</h4>
+    <ol>
+      <li>Core Site Page Brief Request — Tier 1</li>
+      <li>Core Site Content Review — Tier 1</li>
+      <li>Metadata — Tier 2</li>
+      <li>Blog Page Brief Request — Tier 2</li>
+      <li>YouTube Titles/Descriptions — Tier 3</li>
+      <li>Blog Photo Updates — Tier 3</li>
+      <li>Other — Priority assigned after SEO review</li>
+    </ol>
+
+    <h4>Urgent requests</h4>
+    <p>Select "Urgent" only if your request has been approved for urgent prioritization. Once approved, message Rachel Doheny on Teams with the ticket link and required deadline.</p>
   </div>
 
   <form id="ticketForm">
@@ -189,13 +218,13 @@
         <label for="requestType">Request type <span class="required">*</span></label>
         <select id="requestType" name="requestType" required>
           <option value="" disabled selected>Select one</option>
-          <option>Core Site Page Brief Request — Tier 1</option>
-          <option>Core Site Content Review — Tier 1</option>
-          <option>Metadata — Tier 2</option>
-          <option>Blog Page Brief Request — Tier 2</option>
-          <option>YouTube Titles/Descriptions — Tier 3</option>
-          <option>Blog Photo Updates — Tier 3</option>
-          <option>Other — Priority assigned after SEO review</option>
+          <option>Core Site Page Brief Request</option>
+          <option>Core Site Content Review</option>
+          <option>Metadata</option>
+          <option>Blog Page Brief Request</option>
+          <option>YouTube Titles/Descriptions</option>
+          <option>Blog Photo Updates</option>
+          <option>Other</option>
         </select>
       </div>
       <div class="field">
@@ -208,7 +237,7 @@
           <option>Urgent</option>
         </select>
         <div class="hint warning" id="urgentHint">
-          Urgent requests: Message Rachel Doheny on Teams for approval before selecting "Urgent." Include the reason for urgency and required deadline.
+          Select "Urgent" only if your request has been approved for urgent prioritization. Once approved, message Rachel Doheny on Teams with the ticket link and required deadline.
         </div>
       </div>
     </div>
