@@ -1,0 +1,9 @@
+{
+  "name": "seo-ticketing",
+  "compatibility_date": "2026-09-23",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "main": "src/index.js"
+}
