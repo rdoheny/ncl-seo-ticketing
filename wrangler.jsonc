@@ -6,7 +6,9 @@
     "binding": "ASSETS"
   },
   "main": "src/index.js",
-  "kv_namespaces": [
+  "vars": {
+    "FROM_EMAIL": "onboarding@resend.dev",
+    "NOTIFY_EMAIL": "rdoheny@ncl.com"
     {
       "binding": "TICKETS_KV",
       "id": "f197774a94fe45aabd5b1a8d6a588108"
